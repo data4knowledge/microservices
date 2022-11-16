@@ -25,16 +25,18 @@ The microservices within the system are:
 | BC | 8001 |
 | Study | 8002 |
 | Form | 8003 |
+| SDTM | 8004 |
 
 ### Data Services
 
 | Microservice | Port |
 | ------------- | ------------- |
-| CT | 8010 |
-| BC | 8011 |
-| SDTM | 8011 |
-| Form | 8011 |
-| Study | 8011 |
-| Study Import | 8011 |
-| Study Data Import | 8011 |
-| Studu Data Export | 8011 |
+| RA | 8010 |
+| CRM | 8011 |
+| CT | 8012 |
+| BC | 8013 |
+| Study | 8014 |
+| Study Import | 8015 |
+| Form | 8016 |
+| SDTM | 8017 |
+| Study Data Import | 8018 |
