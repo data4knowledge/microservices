@@ -18,7 +18,17 @@ The services are all python services running on FastAPI and uvicorn. They can be
 
 # Running Locally
 
-Use a single Neo4
+Use a single Neo4 instance will all databases for the microservices setup within one instance. Typical names for a devlepoment environment are
+
+- ra-service-dev
+- crm-service-dev
+- bc-service-dev
+- sdtm-service-dev
+- study-service-dev
+- form-service-dev
+
+Note: there are no separate data bases for Study Import service or the Study Data Import service
+
 ## Port Numbers
 
 ### User Interface Services
@@ -44,6 +54,10 @@ Use a single Neo4
 | Form | 8016 |
 | SDTM | 8017 |
 | Study Data Import | 8018 |
+
+### To Run
+
+Use the ```microservice.command``` file to run. Note this file is mac specific. This will start all of the services and the UIs. There is also a dev_server.sh file in each git repo to run each element individually.
 
 # Deployed
 
@@ -119,7 +133,6 @@ The microservices are deployed using the fly.io cloud service.
 1. deploy the app
 1. Set environment variables
 
-
 ### Environment Variables
 
 Setting environment variables on the server is achieved by using th ecommand line program, either one at a time
@@ -129,3 +142,7 @@ Setting environment variables on the server is achieved by using th ecommand lin
 or multiple values, note space delimited
 
 ```fly secrets set NEO4J_URI=xxx NEO4J_PASSWORD=yyy```
+
+# Loading Studies & Data
+
+To be defined.
