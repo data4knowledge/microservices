@@ -1,4 +1,4 @@
-import os
+import pytest
 import logging
 from d4kms_generic.logger import application_logger
 
@@ -37,3 +37,13 @@ def test_exception(caplog):
   for record in caplog.records:
     assert record.levelname == "ERROR"
   assert "Divide by zero" in caplog.text
+
+def test_exception_with_raise(caplog):
+  with pytest.raises(Exception):
+    try:
+      result = 12 / 0
+    except Exception as e:
+      application_logger.exception("Divide by zero", e, Exception)
+    for record in caplog.records:
+      assert record.levelname == "ERROR"
+    assert "Divide by zero" in caplog.text
