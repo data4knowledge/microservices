@@ -1,0 +1,7 @@
+python-dotenv
+pydantic
+requests
+pytest
+pytest-mock
+pyyaml
+neo4j
