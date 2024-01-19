@@ -1,0 +1,1 @@
+export PYTHONPATH=/Users/daveih/Documents/python/microservices/src
