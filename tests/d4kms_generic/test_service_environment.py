@@ -1,4 +1,3 @@
-import pytest
 import os
 from d4kms_generic.service_environment import ServiceEnvironment
 
