@@ -1,6 +1,6 @@
 from uuid import uuid4
 from pydantic import BaseModel
-from model.neo4j_connection import Neo4jConnection
+from .neo4j_connection import Neo4jConnection
 
 class Node(BaseModel):
 
