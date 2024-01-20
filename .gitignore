@@ -130,3 +130,6 @@ dmypy.json
 .DS_Store
 .development_test_env
 .deta
+.development_env
+.production_env
+.test_env
