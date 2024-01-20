@@ -69,8 +69,6 @@ class Node(BaseModel):
     query = "MATCH (%s { uuid: $uuid1 }) RETURN a" % (node_clause)
     result = tx.run(query, uuid1=uuid)
     for row in result:
-      if raw:
-        print(f"RAW: {cls.as_dict(row['a'])}")
       return cls.as_dict(row['a']) if raw else cls.wrap(row['a'])
     return None
     
