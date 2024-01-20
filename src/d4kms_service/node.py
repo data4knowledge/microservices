@@ -8,24 +8,32 @@ class Node(BaseModel):
   def create(cls, params):
     db = Neo4jConnection()
     with db.session() as session:
-      return session.execute_write(cls._create, cls, params)
+      result = session.execute_write(cls._create, cls, params)
+    db.close()
+    return result
 
   @classmethod
   def find(cls, uuid):
     db = Neo4jConnection()
     with db.session() as session:
-      return session.execute_read(cls._find, cls, uuid)
+      result = session.execute_read(cls._find, cls, uuid)
+    db.close()
+    return result
 
   @classmethod
   def exists(cls, key, value):
     db = Neo4jConnection()
     with db.session() as session:
-      return session.execute_read(cls._exists, cls, key, value)
+      result = session.execute_read(cls._exists, cls, key, value)
+    db.close()
+    return result
 
   def save(self):
     db = Neo4jConnection()
     with db.session() as session:
-      return session.execute_write(self._save, self)
+      result = session.execute_write(self._save, self)
+    db.close()
+    return result
 
   @classmethod
   def wrap(cls, node):
