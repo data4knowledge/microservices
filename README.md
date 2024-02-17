@@ -146,3 +146,7 @@ or multiple values, note space delimited
 # Loading Studies & Data
 
 To be defined.
+
+# Building ppackage
+
+Use pip to install build and twine. use the following commands to build ```python -m build``` and upload  ```twine upload dist/*``` to pypi.org
