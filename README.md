@@ -124,7 +124,7 @@ https://raw.githubusercontent.com/data4knowledge/ra_prep/main/load_data/node-reg
 Load complete. 9 nodes and 7 relationships loaded in 4294 milliseconds.
 ```
 
-## Deploy Micorservice
+## Deploy Microservice
 
 The microservices are deployed using the fly.io cloud service. 
 
