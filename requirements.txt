@@ -1,8 +1,10 @@
 python-dotenv
 pydantic
-requests
-pytest
-pytest-mock
 pyyaml
 neo4j
 markdown
+httpx
+pytest
+pytest-mock
+pytest-httpx
+pytest-asyncio
