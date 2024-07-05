@@ -8,3 +8,7 @@ pytest
 pytest-mock
 pytest-httpx
 pytest-asyncio
+fastapi
+Authlib
+starlette
+itsdangerous 

@@ -15,7 +15,7 @@ setuptools.setup(
   description="A python package for building d4k microservcies",
   long_description=long_description,
   long_description_content_type="text/markdown",
-  install_requires=['pydantic', 'requests', 'pyyaml', 'python-dotenv', 'neo4j', 'markdown'],
+  install_requires=['pydantic', 'requests', 'pyyaml', 'python-dotenv', 'neo4j', 'markdown', 'fastapi', 'Authlib', 'starlette', 'itsdangerous'],
   packages=setuptools.find_packages(where="src"),
   package_dir={"": "src"},
   tests_require=['pytest'],
