@@ -4,12 +4,6 @@ from starlette.middleware.sessions import SessionMiddleware
 from d4kms_generic.service_environment import ServiceEnvironment
 from urllib.parse import quote_plus, urlencode
 
-# AUTH0_SESSION_SECRET=<secret>
-# AUTH0_DOMAIN=<domain>
-# AUTH0_CLIENT_ID=<client id>
-# AUTH0_CLIENT_SECRET=<client secret>
-# AUTH0_AUDIENCE=<audience>
-
 class Auth0():
 
   def __init__(self, app: FastAPI) -> None:
