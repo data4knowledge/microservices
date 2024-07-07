@@ -143,6 +143,18 @@ or multiple values, note space delimited
 
 ```fly secrets set NEO4J_URI=xxx NEO4J_PASSWORD=yyy```
 
+# Auth0 Environment Keys
+
+```
+AUTH0_SESSION_SECRET=<session secret key>
+AUTH0_DOMAIN=<from the Auth0 configuation>
+AUTH0_CLIENT_ID=<from the Auth0 configuation>
+AUTH0_CLIENT_SECRET=<from the Auth0 configuation>
+AUTH0_AUDIENCE=<from the Auth0 configuation>
+```
+
+For the session secret run ```cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1```to generate a 50 character randon string
+
 # Loading Studies & Data
 
 To be defined.

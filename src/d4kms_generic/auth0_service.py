@@ -48,7 +48,7 @@ class Auth0Service():
 
   def logout(self, request: Request) -> str:
     request.session.clear()
-    data = {"returnTo": self._get_abs_path("home"),"client_id": self.client_id}
+    data = {"returnTo": self._get_abs_path("home"), "client_id": self.client_id}
     url = f"https://{self.domain}/v2/logout?{urlencode(data,quote_via=quote_plus,)}"
     print(f"URL: {url}")
     return url
