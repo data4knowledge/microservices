@@ -143,7 +143,9 @@ or multiple values, note space delimited
 
 ```fly secrets set NEO4J_URI=xxx NEO4J_PASSWORD=yyy```
 
-# Auth0 Environment Keys
+# Using Auth0 by Okta
+
+## Environment Keys
 
 ```
 AUTH0_SESSION_SECRET=<session secret key>
@@ -154,6 +156,30 @@ AUTH0_AUDIENCE=<from the Auth0 configuation>
 ```
 
 For the session secret run ```cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1```to generate a 50 character randon string
+
+## Code in Main Program
+
+Use this initialisation code
+
+```
+authorisation = Auth0Service(app)
+authorisation.register()
+```
+
+Need a local method to protect an endpoint
+
+```
+def protect_endpoint(request: Request) -> None:
+  authorisation.protect_route(request, "/login")
+```
+
+and then protect an endpoint by using
+
+```
+@app.get("/index", dependencies=[Depends(protect_endpoint)])
+def index(request: Request):
+  ...code...
+```
 
 # Loading Studies & Data
 
