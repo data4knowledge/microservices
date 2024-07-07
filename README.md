@@ -153,9 +153,12 @@ AUTH0_DOMAIN=<from the Auth0 configuation>
 AUTH0_CLIENT_ID=<from the Auth0 configuation>
 AUTH0_CLIENT_SECRET=<from the Auth0 configuation>
 AUTH0_AUDIENCE=<from the Auth0 configuation>
+ROOT_URL=<base URL for the app>
 ```
 
 For the session secret run ```cat /dev/urandom | LC_ALL=C tr -dc 'a-zA-Z0-9' | fold -w 50 | head -n 1```to generate a 50 character randon string
+
+For the root URL use ```http:\\localhost:8000```or similar for a locally running app or ```https:\\xxx.fly.dev```for a deployed app
 
 ## Code in Main Program
 
