@@ -43,16 +43,19 @@ class Auth0Service():
     application_logger.info(f"User {token['userinfo']}")
     
   async def login(self, request: Request):
-    application_logger.info(f"Login attempt")
+    url = self._get_abs_path("callback")
+    application_logger.info(f"Login attempt '{url}")
     return await self.oauth.auth0.authorize_redirect(
       request,
-      redirect_uri=self._get_abs_path("callback"),
+      redirect_uri=url,
       audience=self.audience
     )
 
   def logout(self, request: Request) -> str:
     request.session.clear()
-    data = {"returnTo": self._get_abs_path("home"), "client_id": self.client_id}
+    url = self._get_abs_path("home")
+    application_logger.info(f"Logout attempt '{url}")
+    data = {"returnTo": url, "client_id": self.client_id}
     url = f"https://{self.domain}/v2/logout?{urlencode(data,quote_via=quote_plus,)}"
     application_logger.info(f"Logout URL '{url}'")
     return url
