@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, HTTPException, status
 from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
 from d4kms_generic.service_environment import ServiceEnvironment
+from d4kms_generic.logger import application_logger
 from urllib.parse import quote_plus, urlencode
 
 class Auth0Service():
@@ -16,6 +17,7 @@ class Auth0Service():
     self.domain = se.get('AUTH0_DOMAIN')
     self.client_id = se.get('AUTH0_CLIENT_ID')
     self.client_secret = se.get('AUTH0_CLIENT_SECRET')
+    self.root_url = se.get('ROOT_URL')
 
   def register(self) -> None:
     """
@@ -38,8 +40,10 @@ class Auth0Service():
     request.session['access_token'] = token['access_token']
     request.session['id_token'] = token['id_token']
     request.session['userinfo'] = token['userinfo']
+    application_logger.info(f"User {token['userinfo']}")
     
   async def login(self, request: Request):
+    application_logger.info(f"Login attempt")
     return await self.oauth.auth0.authorize_redirect(
       request,
       redirect_uri=self._get_abs_path("callback"),
@@ -50,7 +54,7 @@ class Auth0Service():
     request.session.clear()
     data = {"returnTo": self._get_abs_path("home"), "client_id": self.client_id}
     url = f"https://{self.domain}/v2/logout?{urlencode(data,quote_via=quote_plus,)}"
-    print(f"URL: {url}")
+    application_logger.info(f"Logout URL '{url}'")
     return url
 
   def protect_route(self, request: Request, location: str='/login') -> None:
@@ -67,5 +71,6 @@ class Auth0Service():
       )
 
   def _get_abs_path(self, route: str):
-    app_domain = "http://localhost:8000"
+    app_domain = self.root_url[:-1] if self.root_url.endswith("/") else self.root_url
+    application_logger.info(f"Forming absolute path using '{app_domain}")
     return f"{app_domain}{self.app.url_path_for(route)}"
