@@ -185,6 +185,25 @@ def index(request: Request):
 
 To be defined.
 
-# Building ppackage
+# Building package
 
-Use pip to install build and twine. use the following commands to build ```python -m build``` and upload  ```twine upload dist/*``` to pypi.org
+## Build and Upload
+
+Use pip to install build and twine. Use the following commands to build
+
+```python -m build``` 
+
+and upload to pypi.org using the command
+
+```twine upload dist/*``` 
+
+Upload requires a token.
+
+## Token
+
+Generate an API token on pypi.org. Then, to use the API token:
+
+```
+Set your username to __token__
+Set your password to the token value, including the pypi- prefix
+```
