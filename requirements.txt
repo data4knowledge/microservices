@@ -2,7 +2,7 @@ python-dotenv
 pydantic
 pyyaml
 neo4j
-markdown
+markdown==3.6
 httpx
 pytest
 pytest-mock

@@ -2,10 +2,11 @@ import markdown
 
 class ReleaseNotes:
   
-  DIR = "templates/status/partials"
-  RELEASE_NOTES = f'{DIR}/release_notes.md'
+  DIR = 'templates/status/partials'
+  FILE = 'release_notes.md'
 
-  def __init__(self):
+  def __init__(self, dir=None):
+    self._dir = dir if dir else self.DIR
     self._text = ""
     self._read()
 
@@ -13,6 +14,6 @@ class ReleaseNotes:
     return markdown.markdown(self._text)
 
   def _read(self):
-    with open(self.__class__.RELEASE_NOTES, "r") as f:
+    path = f'{self._dir}/{self.FILE}'
+    with open(path, "r") as f:
       self._text = f.read()
-
