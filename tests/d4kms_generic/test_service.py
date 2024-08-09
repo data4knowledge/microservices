@@ -61,6 +61,20 @@ async def test_post(httpx_mock: HTTPXMock):
   assert await service.post("post_endpoint", data={'send': "data"}) == {"result": "good"}
 
 @pytest.mark.asyncio
+async def test_post_200(httpx_mock: HTTPXMock):
+  httpx_mock.add_response(text='{"result": "good"}', status_code=200)
+  service = Service(TEST_URL_1)
+  assert await service.post("post_endpoint", data={'send': "data"}) == {"result": "good"}
+
+@pytest.mark.asyncio
+async def test_post_timeout(mocker):
+  mock_post = mocker.patch("httpx.AsyncClient.post", return_value=httpx.Response(200,json={"status":"passed"}),)
+  service = Service(TEST_URL_1)
+  assert await service.post("post_endpoint", data={'send': "data"}, timeout=100) == {'status': 'passed'}
+  assert mock_post.call_count == 1
+  mock_post.assert_has_calls([mocker.call('http://d4k.dk/service/version/post_endpoint',json={'send': 'data'}, timeout=100)])
+
+@pytest.mark.asyncio
 async def test_post_error(httpx_mock: HTTPXMock):
   expected = {'error': "Service failed to respond. Error: 'Response text', status: 500"}
   httpx_mock.add_response(text="Response text", status_code=500)
