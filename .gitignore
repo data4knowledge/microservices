@@ -133,3 +133,4 @@ dmypy.json
 .development_env
 .production_env
 .test_env
+~$*.pptx
