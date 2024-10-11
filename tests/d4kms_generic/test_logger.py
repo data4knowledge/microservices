@@ -3,27 +3,55 @@ import logging
 from d4kms_generic.logger import application_logger
 
 def test_default_level(caplog):
+  assert application_logger.logger.getEffectiveLevel() == logging.INFO
+
+def test_default(caplog):
+  application_logger.set_level(application_logger.INFO)
+  application_logger.debug("LOGGING MESSAGE DEBUG")
+  application_logger.error("LOGGING MESSAGE ERROR")
+  application_logger.warning("LOGGING MESSAGE WARNING")
+  application_logger.info("LOGGING MESSAGE INFO")
+  assert "LOGGING MESSAGE DEBUG" not in caplog.text
+  assert "LOGGING MESSAGE ERROR" in caplog.text
+  assert "LOGGING MESSAGE WARNING" in caplog.text
+  assert "LOGGING MESSAGE INFO" in caplog.text
+
+def test_set_level(caplog):
+  assert application_logger.logger.getEffectiveLevel() == logging.INFO
+  application_logger.set_level(application_logger.DEBUG)
   assert application_logger.logger.getEffectiveLevel() == logging.DEBUG
 
+def test_get_level(caplog):
+  application_logger.set_level(application_logger.INFO)
+  assert application_logger.get_level() == logging.INFO
+  assert application_logger.get_level_str() == "INFO"
+  application_logger.set_level(application_logger.DEBUG)
+  assert application_logger.get_level() == logging.DEBUG
+  assert application_logger.get_level_str() == "DEBUG"
+
 def test_debug(caplog):
+  application_logger.set_level(application_logger.DEBUG)
   application_logger.debug("LOGGING MESSAGE")
   for record in caplog.records:
     assert record.levelname == "DEBUG"
   assert "LOGGING MESSAGE" in caplog.text
 
 def test_info(caplog):
+  application_logger.set_level(application_logger.INFO)
   application_logger.info("LOGGING MESSAGE")
   for record in caplog.records:
     assert record.levelname == "INFO"
   assert "LOGGING MESSAGE" in caplog.text
 
 def test_warning(caplog):
+  application_logger.set_level(application_logger.WARNING)
   application_logger.warning("LOGGING MESSAGE")
   for record in caplog.records:
     assert record.levelname == "WARNING"
   assert "LOGGING MESSAGE" in caplog.text
 
 def test_error(caplog):
+  application_logger.set_level(application_logger.ERROR)
   application_logger.error("LOGGING MESSAGE")
   for record in caplog.records:
     assert record.levelname == "ERROR"
