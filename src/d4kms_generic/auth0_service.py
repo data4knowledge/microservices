@@ -17,7 +17,9 @@ class Auth0Service():
     self.domain = se.get('AUTH0_DOMAIN')
     self.client_id = se.get('AUTH0_CLIENT_ID')
     self.client_secret = se.get('AUTH0_CLIENT_SECRET')
-    self.root_url = se.get('ROOT_URL')
+    url = se.get('ROOT_URL')
+    self.base_url = url if url else None
+    application_logger.info(f"Base URL: {self.base_url}")
 
   def register(self) -> None:
     """
@@ -43,6 +45,7 @@ class Auth0Service():
     application_logger.info(f"User {token['userinfo']}")
     
   async def login(self, request: Request, route_method: str) -> None:
+    self._update_url(request)
     url = self._get_abs_path(route_method)
     application_logger.info(f"Login attempt '{url}")
     return await self.oauth.auth0.authorize_redirect(
@@ -52,6 +55,7 @@ class Auth0Service():
     )
 
   def logout(self, request: Request, route_method: str) -> str:
+    self._update_url(request)
     request.session.clear()
     url = self._get_abs_path(route_method)
     application_logger.info(f"Logout attempt '{url}")
@@ -64,6 +68,7 @@ class Auth0Service():
     """
     This Dependency protects an endpoint and it can only be accessed if the user has an active session
     """
+    self._update_url(request)
     if not 'id_token' in request.session:  
       # it could be userinfo instead of id_token
       # this will redirect people to the login after if they are not logged in
@@ -74,6 +79,16 @@ class Auth0Service():
       )
 
   def _get_abs_path(self, route: str):
-    app_domain = self.root_url[:-1] if self.root_url.endswith("/") else self.root_url
-    application_logger.info(f"Forming absolute path using '{app_domain}")
-    return f"{app_domain}{self.app.url_path_for(route)}"
+    if self.base_url:
+      application_logger.debug(f"Using base URL '{self.base_url}'")
+      app_domain = self.base_url[:-1] if self.base_url.endswith("/") else self.base_url
+      application_logger.info(f"Forming absolute path using '{app_domain}'")
+      return f"{app_domain}{self.app.url_path_for(route)}"
+    else:
+      application_logger.error(f"The base URL is not set")
+      return ''
+    
+  def _update_url(self, request: Request):
+    if not self.base_url:
+      self.base_url = str(request.base_url)
+      application_logger.info(f"Updated base URL '{self.base_url}'")
