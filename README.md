@@ -153,6 +153,8 @@ AUTH0_DOMAIN=<from the Auth0 configuation>
 AUTH0_CLIENT_ID=<from the Auth0 configuation>
 AUTH0_CLIENT_SECRET=<from the Auth0 configuation>
 AUTH0_AUDIENCE=<from the Auth0 configuation>
+AUTH0_MNGT_CLIENT_ID=<Management API client ID>
+AUTH0_MNGT_CLIENT_SECRET=<Management API client secret>
 ROOT_URL=<base URL for the app>
 ```
 
