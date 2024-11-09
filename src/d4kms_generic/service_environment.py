@@ -1,6 +1,6 @@
-from dotenv import load_dotenv
 import os
-import logging
+from dotenv import load_dotenv
+from d4kms_generic.logger import application_logger
 
 class ServiceEnvironment():
   
@@ -20,8 +20,10 @@ class ServiceEnvironment():
     if name in os.environ:
       return os.environ[name]
     else:
-      logging.info("Missing environment variable detected: %s" % (name))
+      application_logger.error(f"Missing environment variable '{name}' requested")
       return ""
 
   def load(self):
-    load_dotenv(".%s_env" % self.environment())
+    filename = f".{self.environment()}_env"
+    application_logger.debug(f"Environment file '{filename}' read")
+    load_dotenv(filename)

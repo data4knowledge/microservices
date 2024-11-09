@@ -1,1 +1,1 @@
-__package_version__ = "0.9"
+__package_version__ = "0.10"
