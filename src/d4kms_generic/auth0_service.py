@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, HTTPException, status
 from authlib.integrations.starlette_client import OAuth
 from starlette.middleware.sessions import SessionMiddleware
+from d4kms_generic.auth0_management import Auth0Management
 from d4kms_generic.service_environment import ServiceEnvironment
 from d4kms_generic.logger import application_logger
 from urllib.parse import quote_plus, urlencode
@@ -26,7 +27,6 @@ class Auth0Service():
     Since you have a WebApp you need OAuth client registration so you can perform
     authorization flows with the authorization server
     """
-    se = ServiceEnvironment()
     self.oauth = OAuth()
     self.oauth.register(
       "auth0",
@@ -35,6 +35,7 @@ class Auth0Service():
       client_kwargs={"scope": "openid profile email"},
       server_metadata_url=f'https://{self.domain}/.well-known/openid-configuration'
     )
+    self.management = Auth0Management()
 
   async def save_token(self, request: Request):
     token = await self.oauth.auth0.authorize_access_token(request)
@@ -42,8 +43,9 @@ class Auth0Service():
     request.session['access_token'] = token['access_token']
     request.session['id_token'] = token['id_token']
     request.session['userinfo'] = token['userinfo']
-    application_logger.info(f"User {token['userinfo']}")
-    
+    request.session['userinfo']['roles'] = self._get_roles(token['userinfo'])
+    application_logger.info(f"User {request.session['userinfo']}")
+
   async def login(self, request: Request, route_method: str) -> None:
     self._update_url(request)
     url = self._get_abs_path(route_method)
@@ -92,3 +94,16 @@ class Auth0Service():
     if not self.base_url:
       self.base_url = str(request.base_url)
       application_logger.info(f"Updated base URL '{self.base_url}'")
+
+  def _get_roles(self, user_info):
+    result = []
+    try:
+      user_id = user_info['sub']
+      if user_id:
+        roles = self.management.user_roles(user_id)
+        if roles:
+          result = roles['roles']
+    except Exception as e:
+      application_logger.exception(f"Exception obtaining user role information", e)
+    return result
+  
