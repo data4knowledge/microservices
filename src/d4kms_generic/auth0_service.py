@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Request, HTTPException, status
+from fastapi import Request, HTTPException, status
 from authlib.integrations.starlette_client import OAuth
-from starlette.middleware.sessions import SessionMiddleware
 from d4kms_generic.auth0_management import Auth0Management
 from d4kms_generic.service_environment import ServiceEnvironment
 from d4kms_generic.logger import application_logger
@@ -8,11 +7,8 @@ from urllib.parse import quote_plus, urlencode
 
 class Auth0Service():
 
-  def __init__(self, app: FastAPI) -> None:
+  def __init__(self) -> None:
     se = ServiceEnvironment()
-    secret = se.get('AUTH0_SESSION_SECRET')
-    app.add_middleware(SessionMiddleware, secret_key=secret)
-    self.app = app
     self.oauth = None
     self.audience = se.get('AUTH0_AUDIENCE')
     self.domain = se.get('AUTH0_DOMAIN')
@@ -80,12 +76,13 @@ class Auth0Service():
         headers={"Location": location}
       )
 
-  def _get_abs_path(self, route: str):
+  def _get_abs_path(self, route: str) -> str:
     if self.base_url:
       application_logger.debug(f"Using base URL '{self.base_url}'")
       app_domain = self.base_url[:-1] if self.base_url.endswith("/") else self.base_url
-      application_logger.info(f"Forming absolute path using '{app_domain}'")
-      return f"{app_domain}{self.app.url_path_for(route)}"
+      route = route if route.startswith("/") else f"/{route}"
+      application_logger.info(f"Forming absolute path using '{app_domain}' and '{route}'")
+      return f"{app_domain}{route}"
     else:
       application_logger.error(f"The base URL is not set")
       return ''
