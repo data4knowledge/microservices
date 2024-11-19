@@ -32,6 +32,9 @@ class Auth0Service():
       server_metadata_url=f'https://{self.domain}/.well-known/openid-configuration'
     )
     self.management = Auth0Management()
+  
+  def management_token(self):
+    self.management.token()
 
   async def save_token(self, request: Request):
     token = await self.oauth.auth0.authorize_access_token(request)
